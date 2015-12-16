@@ -1,7 +1,8 @@
+#Help to install
 
-sudo pip install -r socialpoint/socialpoint/requirements.txt
 virtualenv socialpoint-virtualenv
 cd socialpoint-virtualenv
+source socialpoint-virtualenv/bin/activate
 pip install -r ../socialpoint/socialpoint/requirements.txt
 
 echo "open README.md to see how to start the project"
