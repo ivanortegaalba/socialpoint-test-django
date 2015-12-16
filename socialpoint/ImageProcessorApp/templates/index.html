@@ -1,0 +1,51 @@
+{% extends 'esqueleton.html' %}
+
+{% block content %}
+
+<body>
+    <h1>Tareas</h1>
+        <button id="refresh" class="btn btn-default" onclick='window.location.href="/"'>Refresh</button></br>
+             <br><div id="error" class="alert alert-danger alert-dismissible" role="alert" hidden="hidden"></div>
+             <br><p>Estimated time: 10 second</p>
+                {% regroup object_list by get_status_display as task_list %}
+
+                    {% for task in task_list %}
+                    <table class="table table-striped">
+                        <thead class="center">
+                            <tr><h3>{{ task.grouper }}</h3></tr>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Uploaded</th>
+                            <th>Last Change</th>
+                            <th>Status</th>
+                        <tr>
+                        <thead>
+                        <tbody>
+                            {% for item in task.list %}
+                            <tr id="{{ item.id }}" class="task-table">
+                                <td id="name-{{ item.id }}" name="name"> <a href="/task/{{ item.slug }}/"> {{ item.name }} </a> </td>
+                                <td name="uploaded"> {{ item.uploaded }} </td>
+                                <td name="last_change"> {{ item.last_change }} </td>
+                                <td name="status"> {{ item.get_status_display }} </td>
+                                <td><button id="{{ item.id }}" class="btn-play btn btn-success" >Play</button><td>
+                                {% if item.status == 3 %}
+                                    <td><button id="{{ item.id }}" class="btn-download btn btn-warning" onclick='window.location.href="download?id={{ item.id }}"'>Download</button><td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                    {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <form action="{% url 'addTask' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+                <p> to identify the task, you have to into a name
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-info"> Add Task </button>
+            </form>
+        </div>
+    </div>
+</body>
+
+{% endblock %}

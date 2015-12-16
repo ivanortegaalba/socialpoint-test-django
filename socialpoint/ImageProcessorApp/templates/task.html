@@ -1,0 +1,24 @@
+{% extends 'esqueleton.html' %}
+
+{% block content %}
+    <h1>{{object.name}}</h1>
+    <table class="table table-striped">
+        <thead class="center">
+        <tr>
+            <th>Status</th>
+            <th>Uploaded Date</th>
+        <tr>
+        <thead>
+        <tbody>
+        <tr>
+            <td> {{ object.get_status_display }} </td>
+            <td> {{ object.uploaded }} </td>
+        </tr>
+        <tbody>
+
+    </table>
+    <div class="row">
+        <img src="{{ object.image.url }}">
+    </div>
+
+{% endblock %}
