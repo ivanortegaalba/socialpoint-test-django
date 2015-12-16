@@ -1,3 +1,7 @@
+"""
+All the task that it can be executed by Celery
+This function will be passed to celery daemon to execute concurrently
+"""
 from __future__ import absolute_import
 from celery import shared_task,task
 from celery.task.control import inspect
@@ -8,13 +12,15 @@ from PIL import Image
 
 @shared_task(name='setFormatImage')
 def setFormatImage(idTask):
+    """
+    Is executed concurrently by Celery
+    This image search
+    """
     task = Task.objects.get(id=idTask)
     i = inspect()
-    print i.stats()
-    if i.active() > 3 :
-        status = 4
-        setFormatImage.retry(idTask)
-        return False
+    if i.active() > 3 : #Control about task, only 3 concurrently
+        status = 1
+        added = False
     else:
         task = Task.objects.get(id=idTask)
         url = task.image.url
@@ -24,4 +30,5 @@ def setFormatImage(idTask):
         task.status = 3
         task.image_converted = str(task.image).replace('.png', '.jpg')
         task.save()
-        return True
+        added = True
+    return added

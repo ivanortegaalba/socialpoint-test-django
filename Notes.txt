@@ -1,0 +1,10 @@
+Time employed: 16 h
+Bug not fixed or important upgrades:
+    - The extension file it's not filtered
+    - No to use {%static %} or {%loadstatic%} to load statics files
+    - Not use test (I just know about it a bit)
+    - Don't open streaming with <meta http-equiv="refresh" content="5" /> open a real
+    streaming managing the events.
+    - Add cancel server
+    - Control about execution error
+    - Add the state "in queue" for task sanded but without permission to execute.

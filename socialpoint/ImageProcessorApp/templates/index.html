@@ -4,9 +4,12 @@
 
 <body>
     <h1>Tareas</h1>
+    <!-- PANEL INFO AND BUTTONS -->
         <button id="refresh" class="btn btn-default" onclick='window.location.href="/"'>Refresh</button></br>
-             <br><div id="error" class="alert alert-danger alert-dismissible" role="alert" hidden="hidden"></div>
-             <br><p>Estimated time: 10 second</p>
+        <br><div id="error" class="alert alert-danger alert-dismissible" role="alert" hidden="hidden"></div>
+        <br><p>Estimated time: 10 second</p>
+    <!-- end PANEL INFO AND BUTTONS -->
+    <!-- TASK REGROUPED BY STATUS -->
                 {% regroup object_list by get_status_display as task_list %}
 
                     {% for task in task_list %}
@@ -18,6 +21,8 @@
                             <th>Uploaded</th>
                             <th>Last Change</th>
                             <th>Status</th>
+                            <th>Uploaded Image</th>
+                            <th></th>
                         <tr>
                         <thead>
                         <tbody>
@@ -27,6 +32,7 @@
                                 <td name="uploaded"> {{ item.uploaded }} </td>
                                 <td name="last_change"> {{ item.last_change }} </td>
                                 <td name="status"> {{ item.get_status_display }} </td>
+                                <td name="image"><a href="{{item.image.url}}"> {{ item.image.name }} </a></td>
                                 <td><button id="{{ item.id }}" class="btn-play btn btn-success" >Play</button><td>
                                 {% if item.status == 3 %}
                                     <td><button id="{{ item.id }}" class="btn-download btn btn-warning" onclick='window.location.href="download?id={{ item.id }}"'>Download</button><td>
@@ -36,16 +42,18 @@
                     {% endfor %}
         </tbody>
     </table>
-
+<!-- TASK REGROUPED BY STATUS -->
+<!-- UPLOAD TASK PANEL -->
     <div class="panel panel-default">
         <div class="panel-body">
-            <form action="{% url 'addTask' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
-                <p> to identify the task, you have to into a name
+            <form action="{% url 'indexView' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+                <p> <em>To identify the task, you have to into a name</em></p>
                 {{ form.as_p }}
                 <button type="submit" class="btn btn-info"> Add Task </button>
             </form>
         </div>
     </div>
+<!-- end UPLOAD TASK PANEL -->
 </body>
 
 {% endblock %}

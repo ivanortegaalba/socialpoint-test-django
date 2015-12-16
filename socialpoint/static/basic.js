@@ -10,6 +10,7 @@ Url = {
         return vars;
     }
 };
+
 $(document).ready(function(){
     if(Url.get('error').error == 'exceded'){
         $('#error').append('<em>Error:</em> 3 works in progress! Wait...')
@@ -17,13 +18,10 @@ $(document).ready(function(){
     }
 });
 
-
 $(".btn-play").click(function(){
     $.get( "play", { id: $(this).attr('id') },function(data){
         if(data['status'] == "3"){
             window.location.href="/?error=exceded";
         }else window.location.href="/";
     } );
-
-
 });

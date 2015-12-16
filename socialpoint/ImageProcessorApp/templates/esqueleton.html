@@ -1,14 +1,15 @@
 <head>
+    <meta http-equiv="refresh" content="5" />
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-    {% load staticfiles %}
+
 </head>
 <body>
     <div class="content container">
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-12">
             {% block content %}
 
             {% endblock %}
@@ -17,4 +18,40 @@
         </div>
     </div>
 
+<script>
+    /*
+    This script is here because i was having problems with \{%static%\}.
+    In static directory it's the same but in js file
+    */
+    /* Class to extract GET parameters from URL*/
+    Url = {
+        get(){
+            var vars= {};
+            if(window.location.search.length!==0)
+                window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value){
+                    key=decodeURIComponent(key);
+                    if(typeof vars[key]==="undefined") {vars[key]= decodeURIComponent(value);}
+                    else {vars[key]= [].concat(vars[key], decodeURIComponent(value));}
+                });
+            return vars;
+        }
+    };
+
+    $(document).ready(function(){
+        //Show errors
+        if(Url.get('error').error == 'exceded'){
+            $('#error').append('<em>Error:</em> 3 works in progress! Wait...')
+            $('#error').show()
+        }
+        //Send by AJAX the order to execute a task (for after do the autosync)
+        $(".btn-play").click(function(){
+            $.get( "play", { id: $(this).attr('id') },function(data){
+                //If server response with a task state diferent of processing, jump error
+                if(data['status'] != "2"){
+                    window.location.href="/?error=exceded";
+                }else window.location.href="/";
+            } );
+        });
+    });
+</script>
 </body>

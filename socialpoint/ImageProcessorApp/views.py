@@ -1,3 +1,7 @@
+"""
+All views in proyect
+"""
+
 from django.shortcuts import render
 from django.views.generic import ListView,DetailView
 from django.views.generic.edit import FormView
@@ -10,17 +14,22 @@ import json
 from .models import Task
 from .forms import TaskForm
 from .task import *
-# Create your views here.
-
-class IndexView(ListView):
-    template_name= 'index.html'
-    model = Task
 
 class TaskDetailView(DetailView):
+    """
+    This view contain all the iformation about a particular Task
+    """
     template_name = 'task.html'
     model = Task
 
-def addTask(request):
+def indexView(request):
+    """
+    This is the index, to list all the Task grouped by status and to show the form
+    to upload new tasks. So
+        * With GET response this list with empty form
+        * With POST from Task form, test if form is valid, save the task and refresh
+            if it's not valid, return the error.
+    """
     tasks  = Task.objects.order_by('status')
     form = TaskForm()
 
@@ -34,9 +43,13 @@ def addTask(request):
     return render(request, 'index.html', {'form': form, 'object_list':tasks})
 
 def playTask(request):
+    """
+    This view Receive GET request by AJAX with the id to request start.
+    This view test if there are more than 3 task in execution and return a json
+        with the task result.
+    """
     idTask = request.GET['id']
     task = Task.objects.get(id=idTask)
-
 
     if Task.objects.filter(status=2).count() < 3 :
         task.status = 2
@@ -48,7 +61,10 @@ def playTask(request):
     return JsonResponse(resp)
 
 def downloadImage(request):
-
+    """
+    This view manage download requests to response with the image requested
+    """
+    #Search task
     idTask = request.GET['id']
     task = Task.objects.get(id=idTask)
     file_name= task.image_converted.name

@@ -1,24 +1,36 @@
 {% extends 'esqueleton.html' %}
 
 {% block content %}
-    <h1>{{object.name}}</h1>
-    <table class="table table-striped">
-        <thead class="center">
-        <tr>
-            <th>Status</th>
-            <th>Uploaded Date</th>
-        <tr>
-        <thead>
-        <tbody>
-        <tr>
-            <td> {{ object.get_status_display }} </td>
-            <td> {{ object.uploaded }} </td>
-        </tr>
-        <tbody>
-
-    </table>
-    <div class="row">
-        <img src="{{ object.image.url }}">
+<!-- TASK INFO -->
+<div class="panel panel-default">
+    <div class="panel-head">
+        <h1> {{ object.name }} </h1>
     </div>
+        <div class="panel-body">
+        <table class="table table-striped">
+            <thead class="center">
+            <tr>
+                <th>Status</th>
+                <th>Uploaded Date</th>
+                <th>Last Change</th>
+                <th>Image</th>
+            <tr>
+            <thead>
+            <tbody>
+            <tr>
+                <td> {{ object.get_status_display }} </td>
+                <td> {{ object.uploaded }} </td>
+                <td> {{ object.last_change }}</td>
+                <td> {{ object.image }}
+            </tr>
+            <tbody>
+
+        </table>
+        <div class="col-md 12">
+            <img width="100%" src="{{ object.image.url }}">
+        </div>
+    </div>
+</div>
+<!-- end TASK INFO -->
 
 {% endblock %}
